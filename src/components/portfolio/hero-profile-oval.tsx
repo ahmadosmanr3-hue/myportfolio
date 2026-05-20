@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import type { PublicPortrait } from "@/lib/get-portrait";
 import { User } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -14,6 +15,7 @@ function bust(portrait: PublicPortrait) {
 
 /** Oval frame + soft “moon” glow behind you — your purple theme, not a template clone. */
 export function HeroProfileOval({ portrait }: Props) {
+  const { m } = useLanguage();
   const reduce = useReducedMotion() ?? false;
   const url = portrait ? bust(portrait) : null;
 
@@ -24,7 +26,10 @@ export function HeroProfileOval({ portrait }: Props) {
           <User className="size-9" />
         </div>
         <p className="text-center text-xs text-[var(--foreground-muted)]">
-          Add <code className="font-mono text-[var(--electric-purple)]">/public/portrait.png</code>
+          {m.oval.addHint}{" "}
+          <code className="font-mono text-[var(--electric-purple)]">
+            /public/portrait.png
+          </code>
         </p>
       </div>
     );
@@ -55,7 +60,7 @@ export function HeroProfileOval({ portrait }: Props) {
         <div className="h-full w-full overflow-hidden rounded-full border-2 border-violet-400/50 shadow-[0_20px_50px_rgba(0,0,0,0.55),0_0_60px_rgba(139,92,246,0.2)]">
           <img
             src={url}
-            alt="Profile"
+            alt={m.oval.altProfile}
             className="h-full w-full object-contain object-bottom"
             width={300}
             height={420}

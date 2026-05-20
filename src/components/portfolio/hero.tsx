@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import type { PublicPortrait } from "@/lib/get-portrait";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronRight, Sparkles, Zap } from "lucide-react";
@@ -21,17 +22,19 @@ const item = (reduce: boolean) => ({
   },
 });
 
-const chips = [
-  { label: "Zero-cost stack", icon: Sparkles },
-  { label: "High performance", icon: Zap },
-] as const;
+const chipIcons = [Sparkles, Zap] as const;
 
 type HeroProps = {
   portrait: PublicPortrait | null;
 };
 
 export function Hero({ portrait }: HeroProps) {
+  const { m } = useLanguage();
   const reduce = useReducedMotion() ?? false;
+  const chips = [
+    { label: m.hero.chip1, icon: chipIcons[0] },
+    { label: m.hero.chip2, icon: chipIcons[1] },
+  ] as const;
 
   return (
     <section className="relative z-[1] overflow-hidden px-4 pt-6 pb-12 sm:pt-8 md:px-6 lg:px-8">
@@ -55,25 +58,22 @@ export function Hero({ portrait }: HeroProps) {
                   className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--electric-purple)]/90"
                   variants={item(reduce)}
                 >
-                  Portfolio · 2026
+                  {m.hero.kicker}
                 </motion.p>
                 <motion.h1
-                  className="font-[family-name:var(--font-syne)] text-3xl font-extrabold leading-[1.08] tracking-tight text-balance sm:text-4xl md:text-5xl xl:text-[3.1rem] xl:leading-[1.06]"
-                  style={{ fontFamily: "var(--font-syne), system-ui" }}
+                  className="syne-display text-3xl font-extrabold leading-[1.08] tracking-tight text-balance sm:text-4xl md:text-5xl xl:text-[3.1rem] xl:leading-[1.06]"
                   variants={item(reduce)}
                 >
-                  Full-Stack Developer &amp;{" "}
+                  {m.hero.titleBefore}{" "}
                   <span className="bg-gradient-to-r from-[var(--electric-purple)] to-[#c4b5fd] bg-clip-text text-transparent">
-                    Tech Content Creator
+                    {m.hero.titleHighlight}
                   </span>
                 </motion.h1>
                 <motion.p
                   className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--foreground-muted)] sm:text-base"
                   variants={item(reduce)}
                 >
-                  I design and ship zero-cost, high-performance
-                  applications—from mobile and web to local-first
-                  experiences—without compromising polish or speed.
+                  {m.hero.body}
                 </motion.p>
                 <motion.div
                   className="mt-5 flex flex-wrap gap-2"
@@ -100,14 +100,14 @@ export function Hero({ portrait }: HeroProps) {
                     href="#projects"
                     className="group inline-flex items-center gap-2 rounded-full border border-[var(--card-border)]/80 bg-violet-600/12 px-5 py-2.5 text-sm font-medium text-[var(--foreground)] shadow-[0_0_32px_rgba(109,40,217,0.2)] transition hover:-translate-y-0.5 hover:border-violet-400/45 hover:bg-violet-500/10 hover:shadow-[0_0_40px_rgba(139,92,246,0.3)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500/80"
                   >
-                    View work
-                    <ChevronRight className="size-4 transition group-hover:translate-x-0.5" />
+                    {m.hero.ctaWork}
+                    <ChevronRight className="size-4 transition group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                   </a>
                   <a
                     href="#stack"
                     className="text-sm text-[var(--foreground-muted)] underline-offset-4 transition hover:text-[var(--foreground)] hover:underline"
                   >
-                    Tech stack
+                    {m.hero.ctaStack}
                   </a>
                 </motion.div>
               </motion.div>

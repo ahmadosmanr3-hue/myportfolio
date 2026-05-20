@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { motion, useReducedMotion } from "framer-motion";
 import { Brain, Code2, Sparkles } from "lucide-react";
 import type { IconType } from "react-icons";
@@ -85,6 +86,7 @@ const slotVariants = {
 };
 
 export function TechStack() {
+  const { m } = useLanguage();
   const reduce = useReducedMotion() ?? false;
 
   return (
@@ -96,22 +98,20 @@ export function TechStack() {
       <div className="mx-auto max-w-5xl">
         <div className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)] bg-[var(--obsidian-elevated)]/50 px-3 py-1 text-xs font-mono uppercase tracking-wider text-[var(--foreground-muted)]">
           <Code2 className="size-3.5 text-[var(--electric-purple)]" />
-          Tooling
+          {m.stack.pill}
         </div>
         <h2
           id="stack-heading"
-          className="mt-3 font-[family-name:var(--font-syne)] text-2xl font-bold tracking-tight sm:text-3xl"
-          style={{ fontFamily: "var(--font-syne), system-ui" }}
+          className="syne-display mt-3 text-2xl font-bold tracking-tight sm:text-3xl"
         >
-          Tech stack vault
+          {m.stack.heading}
         </h2>
         <p className="mt-2 max-w-2xl text-sm text-[var(--foreground-muted)] sm:text-base">
-          End-to-end stack for mobile, web, APIs, data, and design—from first
-          prototype to production deploys.
+          {m.stack.sub}
         </p>
 
         <h3 className="mb-3 mt-10 text-xs font-mono uppercase tracking-widest text-[var(--foreground-muted)]">
-          Platforms &amp; product
+          {m.stack.platforms}
         </h3>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5">
           {coreTools.map((t, i) => (
@@ -140,7 +140,7 @@ export function TechStack() {
         <div className="mt-12 rounded-2xl border border-violet-500/25 bg-gradient-to-br from-violet-950/40 via-violet-950/10 to-[var(--obsidian-elevated)]/80 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:p-6">
           <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[var(--card-border)]/60 bg-violet-500/10 px-3 py-1 text-xs font-mono uppercase tracking-wider text-[var(--electric-purple)]">
             <Sparkles className="size-3.5" />
-            AI expertise
+            {m.stack.aiPill}
           </div>
           <div className="mt-1 flex items-start gap-2">
             <Brain
@@ -148,14 +148,12 @@ export function TechStack() {
               strokeWidth={1.5}
             />
             <p className="text-sm leading-relaxed text-[var(--foreground-muted)] sm:text-base">
-              LLM integrations, RAG, and tool-calling agents; prompt &amp; context
-              design; safe guardrails; evals and cost-aware routing. Comfortable
-              from hosted APIs to local / open models for privacy-sensitive work.
+              {m.stack.aiBody}
             </p>
           </div>
 
           <h3 className="mb-3 mt-6 text-xs font-mono uppercase tracking-widest text-[var(--foreground-muted)]">
-            AI &amp; ML tooling
+            {m.stack.aiTools}
           </h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-4">
             {aiTools.map((t, i) => (

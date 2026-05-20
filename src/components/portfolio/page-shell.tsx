@@ -11,6 +11,7 @@ import { ScrollProgress } from "./scroll-progress";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { TechStack } from "./tech-stack";
+import { VideoCommercialSection } from "./video-commercial-section";
 
 const mainVariants = {
   hidden: { opacity: 0 },
@@ -58,6 +59,7 @@ export function PageShell({ portrait }: PageShellProps) {
         <BentoProjects />
         <AchievementsMarquee />
         <TechStack />
+        <VideoCommercialSection />
         <ContactsSection />
         <SiteFooter />
       </motion.main>

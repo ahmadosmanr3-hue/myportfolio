@@ -1,14 +1,13 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Car, Coffee, Crown, Leaf } from "lucide-react";
 
 const projects = [
   {
-    id: "kuber",
+    id: "kuber" as const,
     name: "Kuber",
-    tag: "Mobility",
-    desc: "Localized mobility and taxi solution tuned for real-world traffic and rider trust.",
     icon: Car,
     layout: [
       "min-h-[200px] sm:min-h-[220px] sm:col-span-1",
@@ -16,10 +15,8 @@ const projects = [
     ],
   },
   {
-    id: "xanu",
+    id: "xanu" as const,
     name: "Xanu",
-    tag: "Real estate",
-    desc: "Bilingual real estate platform with VIP listings and premium discovery.",
     icon: Crown,
     layout: [
       "min-h-[200px] sm:min-h-[220px] sm:col-span-1",
@@ -27,10 +24,8 @@ const projects = [
     ],
   },
   {
-    id: "nutrify",
+    id: "nutrify" as const,
     name: "Nutrify",
-    tag: "Awarded",
-    desc: "Award-winning nutrition app focused on habits, clarity, and sustainable outcomes.",
     icon: Leaf,
     featured: true,
     layout: [
@@ -40,10 +35,8 @@ const projects = [
     ],
   },
   {
-    id: "rosel",
+    id: "rosel" as const,
     name: "Rosel",
-    tag: "Hospitality",
-    desc: "Cafe ordering with seamless QR flow—faster service, calmer front-of-house.",
     icon: Coffee,
     layout: [
       "min-h-[200px] sm:min-h-[220px] sm:col-span-1",
@@ -69,6 +62,7 @@ const cardBase =
   "group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--card-border)] bg-gradient-to-br from-violet-950/40 via-[var(--obsidian-elevated)]/90 to-[var(--obsidian)]/95 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-shadow duration-300 hover:border-violet-400/30 hover:shadow-[0_0_48px_rgba(139,92,246,0.28)] focus-within:ring-2 focus-within:ring-violet-500/50";
 
 export function BentoProjects() {
+  const { m } = useLanguage();
   const reduce = useReducedMotion() ?? false;
 
   return (
@@ -80,18 +74,17 @@ export function BentoProjects() {
       <div className="mx-auto max-w-5xl">
         <h2
           id="projects-heading"
-          className="font-[family-name:var(--font-syne)] text-2xl font-bold tracking-tight sm:text-3xl"
-          style={{ fontFamily: "var(--font-syne), system-ui" }}
+          className="syne-display text-2xl font-bold tracking-tight sm:text-3xl"
         >
-          Project grid
+          {m.projects.heading}
         </h2>
         <p className="mt-2 max-w-xl text-sm text-[var(--foreground-muted)] sm:text-base">
-          A bento of shipped products and platforms—each built for performance,
-          clarity, and scale.
+          {m.projects.sub}
         </p>
         <div className="mt-8 grid auto-rows-min grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3 lg:gap-y-3">
           {projects.map((p, i) => {
             const ProjectIcon = p.icon;
+            const copy = m.projects.items[p.id];
             return (
               <motion.article
                 key={p.id}
@@ -114,7 +107,7 @@ export function BentoProjects() {
                 <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-violet-500/10 blur-2xl transition group-hover:bg-violet-500/20" />
                 {p.featured ? (
                   <div className="mb-1 inline-flex w-fit items-center gap-1 rounded-full border border-[var(--gold-dim)]/40 bg-amber-950/20 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-[var(--gold)]">
-                    Silver medal
+                    {m.projects.silverMedal}
                   </div>
                 ) : null}
                 <div className="flex items-start justify-between gap-3">
@@ -122,24 +115,21 @@ export function BentoProjects() {
                     <ProjectIcon className="size-5" strokeWidth={1.6} />
                   </div>
                   <span className="rounded-full border border-[var(--card-border)]/60 px-2.5 py-0.5 text-xs font-mono text-[var(--foreground-muted)]">
-                    {p.tag}
+                    {copy.tag}
                   </span>
                 </div>
-                <h3
-                  className="mt-4 flex items-center gap-1 font-[family-name:var(--font-syne)] text-xl font-bold tracking-tight"
-                  style={{ fontFamily: "var(--font-syne), system-ui" }}
-                >
+                <h3 className="syne-display mt-4 flex items-center gap-1 text-xl font-bold tracking-tight">
                   {p.name}
                   <ArrowUpRight
-                    className="size-4 opacity-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+                    className="size-4 opacity-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 rtl:rotate-180"
                     strokeWidth={1.75}
                     aria-hidden
                   />
                 </h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--foreground-muted)]">
-                  {p.desc}
+                  {copy.desc}
                 </p>
-                <div className="mt-4 h-px w-12 bg-gradient-to-r from-violet-500/40 to-transparent opacity-0 transition group-hover:opacity-100" />
+                <div className="mt-4 h-px w-12 bg-gradient-to-r from-violet-500/40 to-transparent opacity-0 transition group-hover:opacity-100 rtl:bg-gradient-to-l" />
               </motion.article>
             );
           })}

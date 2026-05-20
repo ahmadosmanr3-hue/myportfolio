@@ -1,8 +1,9 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import {
-  TIKTOK_URL,
   TELEGRAM_LINKS,
+  TIKTOK_URL,
   WHATSAPP_LINKS,
 } from "@/lib/contact-links";
 import { motion, useReducedMotion } from "framer-motion";
@@ -70,13 +71,16 @@ function ChannelBlock({
           </div>
           <p className="text-sm font-medium text-[var(--foreground)]">{title}</p>
         </div>
-        <div className="flex flex-wrap items-center gap-2 sm:justify-end">{children}</div>
+        <div className="flex flex-wrap items-center gap-2 sm:justify-end sm:ps-4">
+          {children}
+        </div>
       </div>
     </motion.div>
   );
 }
 
 export function ContactsSection() {
+  const { m } = useLanguage();
   const reduce = useReducedMotion() ?? false;
 
   return (
@@ -88,18 +92,16 @@ export function ContactsSection() {
       <div className="mx-auto max-w-3xl">
         <div className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)] bg-[var(--obsidian-elevated)]/50 px-3 py-1 text-xs font-mono uppercase tracking-wider text-[var(--foreground-muted)]">
           <Mail className="size-3.5 text-[var(--electric-purple)]" />
-          Contact
+          {m.contact.pill}
         </div>
         <h2
           id="contact-heading"
-          className="mt-3 font-[family-name:var(--font-syne)] text-2xl font-bold tracking-tight sm:text-3xl"
-          style={{ fontFamily: "var(--font-syne), system-ui" }}
+          className="syne-display mt-3 text-2xl font-bold tracking-tight sm:text-3xl"
         >
-          Let&apos;s connect
+          {m.contact.heading}
         </h2>
         <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--foreground-muted)] sm:text-base">
-          Same numbers work on both Telegram and WhatsApp—pick whichever
-          you use.
+          {m.contact.sub}
         </p>
 
         <div className="mt-8 overflow-hidden rounded-2xl border border-[var(--card-border)] bg-[var(--obsidian-elevated)]/40 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur-sm">
@@ -117,9 +119,9 @@ export function ContactsSection() {
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[var(--card-border)] bg-violet-950/35 text-[var(--electric-purple)]">
                 <SiTiktok className="size-5" aria-hidden />
               </div>
-              <div className="min-w-0 text-left">
+              <div className="min-w-0 text-start">
                 <p className="text-sm font-medium text-[var(--foreground)]">
-                  TikTok
+                  {m.contact.tiktok}
                 </p>
                 <p className="mt-0.5 truncate text-xs text-[var(--foreground-muted)] sm:text-sm">
                   @ahmadteachestech
@@ -127,14 +129,14 @@ export function ContactsSection() {
               </div>
             </div>
             <ChevronRight
-              className="size-4 shrink-0 text-[var(--gold)]/80 transition group-hover:translate-x-0.5"
+              className="size-4 shrink-0 text-[var(--gold)]/80 transition group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
               strokeWidth={2}
               aria-hidden
             />
           </motion.a>
 
           <ChannelBlock
-            title="Telegram"
+            title={m.contact.telegram}
             Icon={SiTelegram}
             index={0}
             reduce={reduce}
@@ -147,7 +149,7 @@ export function ContactsSection() {
           </ChannelBlock>
 
           <ChannelBlock
-            title="WhatsApp"
+            title={m.contact.whatsapp}
             Icon={SiWhatsapp}
             index={1}
             reduce={reduce}
