@@ -6,6 +6,7 @@ import type { PublicPortrait } from "@/lib/get-portrait";
 import { AnimatePresence, motion } from "framer-motion";
 import { Code2, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type SiteHeaderProps = {
   portrait: PublicPortrait | null;
@@ -15,6 +16,7 @@ export function SiteHeader({ portrait }: SiteHeaderProps) {
   const { m, locale, setLocale } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [portalReady, setPortalReady] = useState(false);
   const rtl = locale === "ckb";
 
   const links = [
@@ -30,6 +32,10 @@ export function SiteHeader({ portrait }: SiteHeaderProps) {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setPortalReady(true);
   }, []);
 
   useEffect(() => {
@@ -135,68 +141,77 @@ export function SiteHeader({ portrait }: SiteHeaderProps) {
               </button>
             ))}
           </div>
-        <button
-          type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--card-border)] bg-violet-950/30 text-[var(--foreground)]"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-label={open ? m.nav.closeMenu : m.nav.openMenu}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+          <button
+            type="button"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--card-border)] bg-violet-950/30 text-[var(--foreground)]"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? m.nav.closeMenu : m.nav.openMenu}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
       </div>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            className="fixed inset-0 top-14 z-40 border-t border-[var(--card-border)]/50 bg-[var(--obsidian)]/98 backdrop-blur-lg md:hidden"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-          >
-            <nav
-              className="flex flex-col p-4"
-              aria-label="Page sections"
-            >
-              {links.map(({ href, label }, i) => (
-                <motion.a
-                  key={href}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-[var(--card-border)]/30 py-4 text-lg font-medium text-[var(--foreground)]"
-                  initial={{ opacity: 0, x: rtl ? 12 : -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * i }}
+      {portalReady
+        ? createPortal(
+            <AnimatePresence>
+              {open ? (
+                <motion.div
+                  key="mobile-nav"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={m.nav.openMenu}
+                  className="fixed inset-x-0 bottom-0 top-14 z-[49] border-t border-[var(--card-border)]/50 bg-[var(--obsidian)] sm:top-16 md:hidden min-h-[calc(100dvh-3.5rem)] sm:min-h-[calc(100dvh-4rem)]"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  {label}
-                </motion.a>
-              ))}
-              <div className="mt-4 flex flex-wrap gap-2 border-t border-[var(--card-border)]/30 pt-4">
-                <span className="w-full text-xs font-mono uppercase tracking-wider text-[var(--foreground-muted)]">
-                  {m.nav.language}
-                </span>
-                {LOCALES.map(({ id, label }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setLocale(id)}
-                    className={[
-                      "rounded-lg border px-3 py-2 text-sm",
-                      locale === id
-                        ? "border-violet-400/50 bg-violet-600/20 text-[var(--foreground)]"
-                        : "border-[var(--card-border)]/60 text-[var(--foreground-muted)]",
-                    ].join(" ")}
+                  <nav
+                    className="flex h-full flex-col overflow-y-auto p-4 pb-8"
+                    aria-label="Page sections"
                   >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </nav>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+                    {links.map(({ href, label }, i) => (
+                      <motion.a
+                        key={href}
+                        href={href}
+                        onClick={() => setOpen(false)}
+                        className="border-b border-[var(--card-border)]/30 py-4 text-lg font-medium text-[var(--foreground)]"
+                        initial={{ opacity: 0, x: rtl ? 12 : -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.05 * i }}
+                      >
+                        {label}
+                      </motion.a>
+                    ))}
+                    <div className="mt-4 flex flex-wrap gap-2 border-t border-[var(--card-border)]/30 pt-4">
+                      <span className="w-full text-xs font-mono uppercase tracking-wider text-[var(--foreground-muted)]">
+                        {m.nav.language}
+                      </span>
+                      {LOCALES.map(({ id, label }) => (
+                        <button
+                          key={id}
+                          type="button"
+                          onClick={() => setLocale(id)}
+                          className={[
+                            "rounded-lg border px-3 py-2 text-sm",
+                            locale === id
+                              ? "border-violet-400/50 bg-violet-600/20 text-[var(--foreground)]"
+                              : "border-[var(--card-border)]/60 text-[var(--foreground-muted)]",
+                          ].join(" ")}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </nav>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
     </header>
   );
 }
