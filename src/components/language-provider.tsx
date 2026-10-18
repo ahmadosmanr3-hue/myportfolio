@@ -31,8 +31,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw === "en" || raw === "ckb") setLocaleState(raw);
-    setHydrated(true);
+    const frame = window.requestAnimationFrame(() => {
+      if (raw === "en" || raw === "ckb") setLocaleState(raw);
+      setHydrated(true);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const setLocale = (next: Locale) => {

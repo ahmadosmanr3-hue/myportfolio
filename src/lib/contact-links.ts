@@ -3,9 +3,13 @@ export const TIKTOK_URL =
 
 /** Local numbers; E.164 uses Iraq +964 (drop leading 0). */
 export const PHONE_NUMBERS = [
-  { display: "0770 919 4459", e164: "9647709194459" },
-  { display: "0750 919 4459", e164: "9647509194459" },
+  { display: "07509712149", e164: "9647509712149", tel: "tel:+9647509712149" },
 ] as const;
+
+export const PHONE_LINKS = PHONE_NUMBERS.map((p) => ({
+  display: p.display,
+  href: p.tel,
+}));
 
 export const TELEGRAM_LINKS = PHONE_NUMBERS.map((p) => ({
   display: p.display,

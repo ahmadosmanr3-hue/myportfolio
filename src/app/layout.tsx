@@ -26,9 +26,22 @@ const notoArabic = Noto_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
-  title: "Full-Stack Developer, Tech Creator & Videographer | Portfolio",
+  title: "Ahmad — Full-Stack Software Developer in Sulaimaniyah",
   description:
-    "Developer, tech creator, and commercial videographer—apps, AI, and ad-ready video for shops and businesses.",
+    "Portfolio of Ahmad, a full-stack developer building mobile apps, web products, backends, and practical AI integrations.",
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ahmad",
+  url: "https://ahmadteachestech.com",
+  telephone: "+9647509712149",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Sulaimaniyah",
+    addressCountry: "IQ",
+  },
 };
 
 export default function RootLayout({
@@ -43,6 +56,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-dvh flex flex-col overflow-x-hidden">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <Providers>{children}</Providers>
       </body>
     </html>

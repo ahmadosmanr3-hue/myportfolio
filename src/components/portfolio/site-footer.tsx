@@ -6,18 +6,10 @@ import { ArrowUp } from "lucide-react";
 export function SiteFooter() {
   const { m } = useLanguage();
   return (
-    <footer
-      className="border-t border-[var(--card-border)]/50 bg-[var(--obsidian-elevated)]/30 px-4 py-8 md:px-6 lg:px-8"
-      id="footer"
-    >
-      <div className="mx-auto flex max-w-5xl justify-center">
-        <a
-          href="#top"
-          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--card-border)]/60 bg-violet-950/20 px-3 py-1.5 text-xs font-mono text-[var(--gold)] transition hover:border-[var(--gold-dim)]/50 hover:bg-violet-900/20"
-        >
-          <ArrowUp className="size-3.5" />
-          {m.footer.backToTop}
-        </a>
+    <footer className="border-t border-white/15 bg-[var(--ink)] px-5 py-7 text-[var(--paper)] md:px-8">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 text-sm text-white/55 sm:flex-row sm:items-center sm:justify-between">
+        <p>{m.footer.line}</p>
+        <a href="#top" className="inline-flex items-center gap-2 font-semibold text-[var(--paper)]">{m.footer.backToTop}<ArrowUp className="size-4" /></a>
       </div>
     </footer>
   );
